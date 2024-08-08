@@ -160,6 +160,144 @@ app.get('/users', async (req, res) => {
   res.json(users);
 });
 
+## Listando os Usuários
+
+Adicione esse seguinte código em seu arquivo app.ts.
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+})
+
+## Editando um Usuário
+
+Adicione esse seguinte código em seu arquivo app.ts.
+
+app.put('/users/:id', async (req, res) => {
+  const db = await connect()
+  const { name, email } = req.body
+  const { id } = req.params
+  await db.run('UPDATE users SET name = ?, email = ? WHERE id = ?', [name, email, id])
+  const user = await db.get('SELECT * FROM users WHERE id = ?', [id])
+  res.json(user)
+})
+
+## Deletando um Usuário
+
+Adicione esse seguinte código em seu arquivo app.ts.
+
+app.delete('/users/:id', async (req, res) => {
+  const db = await connect()
+  const { id } = req.params
+  await db.run('DELETE FROM users WHERE id = ?', [id])
+  res.json({ message: 'User deleted' })
+})
+
+## Continuação 
+
+Crie uma pasta chamada public e nela crie um arquivo chamado index.html, nesse arquivo adicione o seguinte código:
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <form>
+    <input type="text" name="name" placeholder="Nome">
+    <input type="email" name="email" placeholder="Email">
+    <button type="submit">Cadastrar</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!--  -->
+    </tbody>
+  </table>
+
+  <script>
+    // 
+    const form = document.querySelector('form')
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault()
+
+      const name = form.name.value
+      const email = form.email.value
+
+      await fetch('/users', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email })
+      })
+
+      form.reset()
+      fetchData()
+    })
+
+    // 
+    const tbody = document.querySelector('tbody')
+
+    async function fetchData() {
+      const resp = await fetch('/users')
+      const data = await resp.json()
+
+      tbody.innerHTML = ''
+
+      data.forEach(user => {
+        const tr = document.createElement('tr')
+        tr.innerHTML = `
+          <td>${user.id}</td>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>
+            <button class="excluir">excluir</button>
+            <button class="editar">editar</button>
+          </td>
+        `
+
+        const btExcluir = tr.querySelector('button.excluir')
+        const btEditar = tr.querySelector('button.editar')
+
+        btExcluir.addEventListener('click', async () => {
+          await fetch(`/users/${user.id}`, { method: 'DELETE' })
+          tr.remove()
+        })
+
+        btEditar.addEventListener('click', async () => {
+          const name = prompt('Novo nome:', user.name)
+          const email = prompt('Novo email:', user.email)
+
+          await fetch(`/users/${user.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email })
+          })
+
+          fetchData()
+        })
+
+        tbody.appendChild(tr)
+      })
+    }
+
+    fetchData()
+  </script>
+</body>
+
+</html>
+
 ## Testando a inserção de dados
 
 - Vá até as extenções do Visual Code e instale o Rest Client, após instalado, crie um arquivo chamado ts.http e mova para o src e lá mesmo digite esse código:
@@ -171,6 +309,18 @@ Content-Type: application/json
   "name": "John Doe",
   "email" : "BomDia"
 }
+
+PUT http://localhost:3333/users/1 HTTP/1.1
+content-type: application/json
+
+{
+  "name": "John Doe Updated",
+  "email": "johndoe@mail.com"
+}
+
+####
+
+DELETE http://localhost:3333/users/1 HTTP/1.1
 
 - Abra o seu navegador, vá na barra de pesquisa e digite http://localhost:3333/users; 
 
