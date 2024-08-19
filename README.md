@@ -196,7 +196,7 @@ app.delete('/users/:id', async (req, res) => {
 
 Crie uma pasta chamada public e nela crie um arquivo chamado index.html, nesse arquivo adicione o seguinte código:
 
-<!DOCTYPE html>
+``` <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -226,7 +226,7 @@ Crie uma pasta chamada public e nela crie um arquivo chamado index.html, nesse a
     </tbody>
   </table>
 
-  <script>
+  ''' <script>
     // 
     const form = document.querySelector('form')
 
@@ -265,7 +265,7 @@ Crie uma pasta chamada public e nela crie um arquivo chamado index.html, nesse a
             <button class="excluir">excluir</button>
             <button class="editar">editar</button>
           </td>
-        `
+        '
 
         const btExcluir = tr.querySelector('button.excluir')
         const btEditar = tr.querySelector('button.editar')
@@ -296,7 +296,7 @@ Crie uma pasta chamada public e nela crie um arquivo chamado index.html, nesse a
   </script>
 </body>
 
-</html>
+``` </html>
 
 ## Testando a inserção de dados
 
