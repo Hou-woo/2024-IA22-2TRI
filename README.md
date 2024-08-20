@@ -95,7 +95,7 @@ Abra o navegador e acesse `http://localhost:3333`, você verá a mensagem `Hello
 ## Configurando o banco de dados
 
 - Crie um arquivo no src, chamado database.ts e entre nele, após essa ação digite o seguinte código:
-```
+```typescript
 import { Database, open } from 'sqlite';
 import sqlite3 from 'sqlite3';
 
@@ -124,7 +124,7 @@ export async function connect() {
 ## Adicionando o banco de dados ao servidor
 
 - Entre no arquivo app.ts e digite o seguinte código: 
-```
+```typescript
 import express from 'express';
 import cors from 'cors';
 import { connect } from './database';
@@ -163,7 +163,7 @@ app.get('/users', async (req, res) => {
 ## Listando os Usuários
 
 Adicione esse seguinte código em seu arquivo app.ts.
-```
+```typescript
 app.listen(port, () => {
   console.log(`Server running on port ${port}`)
 })
@@ -171,7 +171,7 @@ app.listen(port, () => {
 ## Editando um Usuário
 
 Adicione esse seguinte código em seu arquivo app.ts.
-```
+```typescript
 app.put('/users/:id', async (req, res) => {
   const db = await connect()
   const { name, email } = req.body
@@ -184,7 +184,7 @@ app.put('/users/:id', async (req, res) => {
 ## Deletando um Usuário
 
 Adicione esse seguinte código em seu arquivo app.ts.
-```
+```typescript
 app.delete('/users/:id', async (req, res) => {
   const db = await connect()
   const { id } = req.params
@@ -195,7 +195,7 @@ app.delete('/users/:id', async (req, res) => {
 ## Continuação 
 
 Crie uma pasta chamada public e nela crie um arquivo chamado index.html, nesse arquivo adicione o seguinte código:
-```
+```typescript
  <!DOCTYPE html>
 <html lang="en">
 
@@ -301,7 +301,7 @@ Crie uma pasta chamada public e nela crie um arquivo chamado index.html, nesse a
 ## Testando a inserção de dados
 
 - Vá até as extenções do Visual Code e instale o Rest Client, após instalado, crie um arquivo chamado ts.http e mova para o src e lá mesmo digite esse código:
-```
+```typescript
 POST http://localhost:3333/users
 Content-Type: application/json
 
@@ -318,7 +318,7 @@ content-type: application/json
   "email": "johndoe@mail.com"
 }
 
-
+```
 
 DELETE http://localhost:3333/users/1 HTTP/1.1
 
